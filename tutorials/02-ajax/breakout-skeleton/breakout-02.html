@@ -18,17 +18,29 @@
 <script>
 
   function postJSON(url, callback, params) {
-    
-    // TODO create a post request here and handle the response
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', url);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.onload = () => {
+      if (xhr.status === 200) {
+        const results = JSON.parse(xhr.response);
+        callback(results);
+      }
+    };
+    xhr.send(params);
   }
 
+  // querySelector accepts CSS selector (just like using CSS)
   var form = document.querySelector('form');
+  // select by attribute. I.e. select all input element with attribute name=user
   var userInput = document.querySelector('input[name=user]');
   var output = document.querySelector('#output');
 
   form.addEventListener('submit', function(e) {
     var params;
-    e.preventDefault(); // don't submit at this point.
+    // prevent browser's default behavior of submit the form and reload the page,
+    // which will stop the following code from runnning
+    e.preventDefault();
 
     // with params!
     params = JSON.stringify({user: userInput.value});
