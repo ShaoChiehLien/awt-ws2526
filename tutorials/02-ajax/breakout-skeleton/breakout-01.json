@@ -1,0 +1,18 @@
+{
+    "books": [
+        {
+            "title": "XML Developer's Guide",
+            "authors": [
+                {
+                    "name": "John Doe",
+                    "email": "john.doe@sth.org"
+                },
+                {
+                    "name": "Max Mustermann",
+                    "email": "max@mustermail.com"
+                }
+            ],
+            "price": 44.95
+        }
+    ]
+}
