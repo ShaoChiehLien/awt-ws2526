@@ -3,6 +3,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var db = require('monk')('localhost/awt_week_4_db');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -17,23 +18,36 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+// Attach the database to the request object is a common pattern:
+// 1. Centralized DB access: One shared req.db avoids repeated database connection setup
+// 2. Cleaner routes: Keeps route handlers focused on business logic
+// 3. Express's middleware Pattern: enhancing the request object as it flows through the stack.
+// 4. Testable: Makes mocking the database easier in tests by injecting a mock req.db
+app.use(function(req,res,next){
+  req.db = db;
+  next();
+});
 
 // the login route. Itself requires BasicAuth authentication. When successful, a JWT token is generated
 app.use('/login', (req,res,next) => {
-  console.log(req.headers.authorization)
-  if (req.headers.authorization !== 'Basic c3R1ZGVudDpvbW1pc2F3ZXNvbWU=') { // student ommisawesome
-    res.set('WWW-Authenticate', 'Basic realm="401"')
-    res.status(401).send()
-    return
-  }
-  else {
+  const username = req.headers.username
+  const password = req.headers.password
+  const db = req.db;
+  const users= db.get('users');
+  // check if the username and password are valid
+  users.findOne({username: username, password: password}).then((user) => {
+    if(!user){
+      res.status(401).send("Invalid username or password")
+      return;
+    }
+    console.log(user)
     const jwt = require('njwt')
     const claims = {permission: 'read-data', username: 'student'}
     const token = jwt.create(claims, 'something-top-secret')
     token.setExpiration(new Date().getTime() + 60 * 1000)
     const jwtTokenSting = token.compact()
     res.send(jwtTokenSting)
-  }
+  }).catch((e) => res.status(500).send())
 })
 
 // the middleware being called before all other endpoints (except "/login", because "/login" is registered before this one
