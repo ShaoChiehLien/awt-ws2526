@@ -40,6 +40,8 @@ class SongDetails extends React.Component {
                         </ul>
                         <button onClick={
                             () => {
+                                // shown is controlled by parent component so we need to call
+                                // parent's handler to update it (i.e. pass info back to parent)
                                 this.props.hideHandler();
                             }
                         }>
@@ -80,16 +82,16 @@ class Songs extends React.Component {
                     </thead>
                     <tbody>
                         {this.props.songlist.map(
-                            (song, i) => 
-                                <Song   key={i} 
-                                        song={song} 
-                                        clickHandler={this.handleDetailsClick} 
+                            (song, i) =>
+                                <Song   key={i}
+                                        song={song}
+                                        clickHandler={this.handleDetailsClick}
                                 />
-                        )}  
-                    </tbody>                  
+                        )}
+                    </tbody>
                 </table>
-                <SongDetails 
-                    shown={this.state.detailsShown} 
+                <SongDetails
+                    shown={this.state.detailsShown}
                     song={this.state.detailSong}
                     hideHandler={this.handleHideClick}
                 />

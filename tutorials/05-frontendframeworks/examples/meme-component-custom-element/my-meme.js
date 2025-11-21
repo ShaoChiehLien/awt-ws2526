@@ -1,3 +1,8 @@
+// Execute order:
+// 1. Browser sees <script type="module" src="my-meme.js">.
+// 2. It downloads my-meme.js asynchronously.
+// 3. Once HTML parsing is complete, the module is executed.
+// 4. As soon as execution of the module begins, the IIFE runs immediately.
 (function() {
 
     // we inherit HTMLElement to create our own HTML element
@@ -5,6 +10,7 @@
 
         // connectedCallback() fires when the element is inserted into the DOM
         connectedCallback() {
+            // mode controls whether the shadow root is accessible from JavaScript outside the component
             this.attachShadow({mode: 'open'});
             // Import the shared template
             this.shadowRoot.appendChild(template.content.cloneNode(true));
@@ -63,10 +69,10 @@
     // template for the contents of the shadow DOM is shared by all
     // <my-meme> instances.
     const template = document.createElement('template');
-    template.innerHTML = `        
-        <img src=""/>    
+    template.innerHTML = `
+        <img src=""/>
         <p class="caption captionTop"></p>
-        <p class="caption captionBottom"></p> 
+        <p class="caption captionBottom"></p>
         <style>
             .caption{
                 position: absolute;

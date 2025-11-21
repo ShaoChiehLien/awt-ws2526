@@ -4,12 +4,12 @@ body {
     padding: 0;
     background-color: #eee;
   }
-  
+
   header {
     height: 4rem;
     display: flex;
-    justify-content: flex-start;
-    align-items: center;
+    justify-content: flex-start; /* aligns child elements horizontally at the start */
+    align-items: center; /* vertically centers child elements */
     flex-direction: row;
     font-size: 1.5rem;
     padding: 1rem;
@@ -20,18 +20,18 @@ body {
       0 2px 4px rgba(0, 0, 0, .12),
       0 3px 8px rgba(0, 0, 0, .06);
   }
-  
+
   header h1 {
     font-weight: 100;
   }
-  
+
   .counter {
     display: flex;
     flex-direction: column;
     min-height: 24rem;
     padding: 1rem;
     margin: 1rem;
-  
+
     background-color: #fff;
     box-shadow:
       0 1px 2px rgba(0, 0, 0, .18),
@@ -39,24 +39,26 @@ body {
       0 3px 8px rgba(0, 0, 0, .06);
     border-radius: 4px;
   }
-  
+
   .counter-state {
+    /* takes up all available space. Equals to flex grow: 1, flex-shrink: 1, flex-basis: 0% */
     flex: 1;
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 5rem;
   }
-  
+
   .buttons {
+    /* flex tells the browser how to arrange child elements inside that container */
     display: flex;
   }
-  
+
   button {
     flex: 1;
-    padding: 1rem;
-    margin: 1rem;
-  
+    padding: 1rem; /* Space between text and border */
+    margin: 1rem; /* Space between buttons */
+
     background-color: rgb(255, 67, 67);
     color: #fff;
     font-size: 2rem;
