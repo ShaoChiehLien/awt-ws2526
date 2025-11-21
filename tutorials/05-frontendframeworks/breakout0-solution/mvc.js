@@ -13,7 +13,7 @@ var Model = /** @class */ (function () {
         get: function () {
             return this.c;
         },
-        enumerable: true,
+        enumerable: false,
         configurable: true
     });
     /** Increment the counter */

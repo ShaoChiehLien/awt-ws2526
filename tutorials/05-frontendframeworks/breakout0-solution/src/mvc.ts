@@ -1,9 +1,12 @@
 /**
  * The model holds all data plus accessors and mutators
- */
+ * R&R of the model: https://www.geeksforgeeks.org/software-engineering/mvc-framework-introduction/
+ * Data flow in MVC: https://softwareengineering.stackexchange.com/questions/432816/who-is-the-observer-in-mvc-controller-or-views
+*/
 class Model {
     private c = 0;
 
+    // observer accepting a function that takes a Model and returns void
     public observer: (_: Model) => void;
 
     private notify () {
