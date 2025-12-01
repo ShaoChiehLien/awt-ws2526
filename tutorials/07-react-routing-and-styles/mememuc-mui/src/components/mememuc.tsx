@@ -127,6 +127,7 @@ const OmmMemeMUC: React.FC = () => {
       </ExpandMore>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardActionArea className="positions">
+          {/* default width is 12, so xs=6 means half width */}
           <Grid container>
             <Grid xs={6}>
               <TextField name="topX" label="Top X" value={captionState.topX} onChange={captionChanged} variant="outlined" margin="normal" type="number"/>

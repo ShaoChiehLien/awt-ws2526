@@ -1,5 +1,5 @@
-import LazyLoadMeme from "./LazyLoadMeme";
 import {List, ListItem} from "@mui/material";
+import React from "react";
 
 const MemeHistory = () => {
     const memesInHistory = [{
@@ -24,21 +24,15 @@ const MemeHistory = () => {
         }];
 
     return (
-    <div>
-        {/* List & ListItem comes with pre‑built styling that matches Material Design guidelines */}
-        <List>
-        {memesInHistory.map((meme) =>
-            <ListItem>
-                <LazyLoadMeme
-                    meme={{
-                        name: meme.name,
-                        link: meme.link
-                    }}
-                />
-            </ListItem>
-        )}
-        </List>
-    </div>);
+        <div>
+            <List>
+                {memesInHistory.map((meme) =>
+                    <ListItem>
+                        <img src={meme.link} alt={meme.name} />
+                    </ListItem>
+                )}
+            </List>
+        </div>);
 }
 
 export default MemeHistory;
