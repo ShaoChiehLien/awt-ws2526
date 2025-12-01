@@ -22,6 +22,7 @@ const OmmMemeMUC: React.FC = () => {
   // the two returned variables per hook (here on the example of the section line) represent:
   // - memeState => the list of all rendered memes. To be updated with data from the API, as soon as the user types some caption
   // - setMemeState => a callback that can be used to update the memeState, e.g. when a new rendered meme is received from the API
+  // only run when the component is mounted. I.e. won't be triggered again when state changes (re-render)
   const [selectState, setSelectState] = React.useState<Meme>()
   const [memeState, setMemeState] = React.useState<Meme[]>([
       {
@@ -39,7 +40,7 @@ const OmmMemeMUC: React.FC = () => {
     fetch(`${MEME_API_BASE_URL}/memes`)
     .then(res => res.json())
     .then((memes: Meme[]) => {
-      setMemeState(memes.map(meme => {
+      setMemeState(memes.map(meme => { // overwrite meme.link to contain full URL
         meme.link = `${MEME_API_BASE_URL}${meme.link}`
         return meme
       }))
@@ -61,7 +62,9 @@ const OmmMemeMUC: React.FC = () => {
   }
   const captionChanged = (e: any) => {
     setCaptionState({
+      // spread operator to copy existing captionState properties
       ...captionState,
+      // without brackets, e.target.name would be interpreted as a string literal
       [e.target.name]: e.target.value,
     })
   }
@@ -78,16 +81,16 @@ const OmmMemeMUC: React.FC = () => {
 
   return (<div className="mememuc">
     <ul className="meme-list">
-      {/*
-      TODO This div should contain a list of all available meme templates (will be shown on the left side of the webapp).
-      memeState contains a list of all available templates
-      TODO also mind that each meme template should have a onClick listener, calling setSelectState, in order to be selectable
-      */}
+      {
+        memeState.map((meme) => {
+          return(<li key={meme.link} onClick={() => setSelectState(meme)}>
+            <img src={meme.link} alt="lists"/>
+          </li>)
+        })
+      }
     </ul>
     <div className="results">
-      {/*
-      TODO this div should contain the rendered meme (= template + caption), which is received from the API
-      */}
+      {results}
     </div>
     <div className="params">
       <div className="texts">
