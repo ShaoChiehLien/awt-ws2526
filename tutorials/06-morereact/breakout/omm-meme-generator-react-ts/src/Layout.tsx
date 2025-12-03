@@ -9,7 +9,6 @@ const Layout = () => {
                 <nav>
                     <ul>
                         <li>
-                            {/* Link to the home page we define in App */}
                             <Link to="/">Home</Link>
                         </li>
                         <li>
@@ -18,9 +17,9 @@ const Layout = () => {
                     </ul>
                 </nav>
             </header>
-            <Outlet />
+            <Outlet/>
         </>
     )
-};
 
+}
 export default Layout;

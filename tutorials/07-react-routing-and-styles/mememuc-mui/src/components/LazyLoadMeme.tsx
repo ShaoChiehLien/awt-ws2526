@@ -3,10 +3,12 @@ import { LazyLoadImage } from 'react-lazy-load-image-component';
 import Meme from "../model/Meme";
 import {Card, CardContent, Typography} from "@mui/material";
 
+// An interface to define the expected props for the component
 export interface LazyLoadMemeProps {
     meme: Meme
 }
 
+// Use object destructuring to extract the meme prop
 const LazyLoadMeme = ({meme}: LazyLoadMemeProps) => {
     return (
         <>
