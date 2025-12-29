@@ -15,9 +15,9 @@ app.get('/viewer', function(req, res){
 });
 
 io.on('connection', function(socket){
-  // TODO: implement listen on 'streaming' for an image
-  //       and send the received image (the data as it is) to 'viewing' channel
-  //       see ws-app/index.js for inspiration
+  socket.on('streaming', function(image){
+    io.emit('viewing', image);
+  })
 });
 
 https.listen(port, function(){
