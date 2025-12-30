@@ -19,7 +19,7 @@ canvas { display: none; }
 </div>
 <script src="https://cdn.jsdelivr.net/npm/socket.io-client@2/dist/socket.io.js"></script>
 <script>
-if (!navigator.mediaDevices) {
+if (!navigator.mediaDevices) { // navigator is a global object for working with media streams
     document.body.textContent = 'Cannot use media devices.'
 }
 const socket = io()
@@ -27,6 +27,7 @@ const socket = io()
 // use MediaDevices API
 // docs: https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia
 let video = document.getElementById('anchor')
+// request access to the camera and then set the video source to the camera stream
 navigator.mediaDevices.getUserMedia({video: true})
 .then(stream => { video.srcObject = stream })
 .catch(error => {
@@ -37,27 +38,26 @@ navigator.mediaDevices.getUserMedia({video: true})
 document.getElementById('start-stream').addEventListener('click', () => startStream())
 document.getElementById('stop-stream').addEventListener('click', () => stopStream())
 
-// render processing
+// render processing: draw the cideo frame to a canva first and then send it
 let canvas = document.getElementById('capture')
+// canvas.getContext('2d') gives you a 2D rendering context, which provides drawing
+// functions like drawImage to draw image on canvas
 let context = canvas.getContext('2d')
+ // stream store the ID of the interval (infinite loop) so we can later stop it
 let stream = null
 const startStream = () => {
-    // TODO: handling start streaming
-
-    // TODO if the stream is already created, do nothing
-
-    // TODO at a certain interval (e.g. every 40ms (=25 fps)):
-       // render the current camera image into a canvas:
-       context.drawImage(video, 0, 0, 640, 480)
-       // TODO send that canvas data to the server via Websocket
-       // how to access the data:
-       console.log(canvas.toDataURL('image/webp'))
-
-    // TODO: Update the "Streaming: OFF" text on the webpage to "Streaming: ON"
-    const streamingStatusDisplay = document.getElementById('message')
+    if (stream) {return}
+    document.getElementById("message").innerText = 'Streaming: ON'
+    stream = setInterval(() => {
+        context.drawImage(video, 0, 0, 640, 480);
+        socket.emit('streaming', canvas.toDataURL('image/webp'))
+    }, 40)
 }
 const stopStream = () => {
-    // TODO: handling stop streaming
+    if (!stream) {return}
+    document.getElementById("message").innerText = 'Streaming: OFF'
+    clearInterval(stream) // stop the interval
+    stream = null // reset stream variable so we can create a new one next time we call startStream
 }
 </script>
 </body>
